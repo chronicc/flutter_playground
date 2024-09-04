@@ -28,6 +28,10 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        def secrets = new Properties()
+        file("../secrets.properties").withInputStream { secrets.load(it) }
+        manifestPlaceholders["googleMapsApiKey"] = secrets.getProperty("googleMapsApiKey")
     }
 
     buildTypes {
