@@ -68,22 +68,30 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                   }),
                   const SizedBox(width: 10.0),
-                  ImageTile('images/x.png', onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('X Login used'),
-                        duration: Duration(seconds: 1),
-                      ),
-                    );
+                  ImageTile('images/x.png', onTap: () async {
+                    if (await authService.signIn(AuthProvider.x)) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Logged in with X'),
+                            duration: Duration(seconds: 1),
+                          ),
+                        );
+                      }
+                    }
                   }),
                   const SizedBox(width: 10.0),
-                  ImageTile('images/facebook.png', onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Facebook Login used'),
-                        duration: Duration(seconds: 1),
-                      ),
-                    );
+                  ImageTile('images/facebook.png', onTap: () async {
+                    if (await authService.signIn(AuthProvider.facebook)) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Logged in with Facebook'),
+                            duration: Duration(seconds: 1),
+                          ),
+                        );
+                      }
+                    }
                   }),
                 ],
               ),
