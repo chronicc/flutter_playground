@@ -38,6 +38,11 @@ dependencies:
   google_sign_in: ^6.2.1
   provider: ^6.1.2
   sign_in_with_apple: ^6.1.3
+  # twitter_login: ^4.4.3
+  twitter_login:
+    git:
+      url: https://github.com/0maru/twitter_login.git
+      ref: 9ecd17c9af7675b00925fcdcd578e1294844f861
 
 dev_dependencies:
   flutter_test:

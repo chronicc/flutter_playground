@@ -41,6 +41,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.18.0"
+  crypto:
+    dependency: transitive
+    description:
+      name: crypto
+      sha256: ec30d999af904f33454ba22ed9a86162b35e52b44ac4807d1d93c288041d7d27
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.5"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -309,6 +317,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.2"
+  twitter_login:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: "9ecd17c9af7675b00925fcdcd578e1294844f861"
+      resolved-ref: "9ecd17c9af7675b00925fcdcd578e1294844f861"
+      url: "https://github.com/0maru/twitter_login.git"
+    source: git
+    version: "4.4.3"
   typed_data:
     dependency: transitive
     description:
