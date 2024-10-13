@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 enum AuthProvider {
   apple,
@@ -14,18 +15,53 @@ class AuthService extends ChangeNotifier {
 
   AuthProvider? _provider;
 
-  bool get authenticated => _account != null;
+  bool _isSignedIn = false;
+  bool get isSignedIn => _isSignedIn;
 
-  GoogleSignInAccount? _account;
-  GoogleSignInAccount? get account => _account;
+  String? _displayName;
+  String? get displayName => _displayName;
 
-  Future<bool> signInWithGoogle() async {
-    if (_account == null) {
-      _account = await _googleSignIn.signIn();
-      if (_account == null) {
-        return false;
+  String? _email;
+  String? get email => _email;
+
+  Future<bool> signIn(AuthProvider provider) async {
+    if (!_isSignedIn) {
+      switch (provider) {
+        case AuthProvider.apple:
+          try {
+            var account = await SignInWithApple.getAppleIDCredential(
+              scopes: [
+                AppleIDAuthorizationScopes.email,
+                AppleIDAuthorizationScopes.fullName,
+              ],
+              webAuthenticationOptions: WebAuthenticationOptions(
+                // A payed apple developer account is required to use this feature
+                clientId: '',
+                redirectUri: Uri.parse(''),
+              ),
+            );
+            _displayName = '$account.givenName $account.familyName';
+            _email = account.email;
+          } catch (e) {
+            print(e);
+            return false;
+          }
+          break;
+        case AuthProvider.google:
+          try {
+            var account = await _googleSignIn.signIn();
+            _displayName = account!.displayName;
+            _email = account.email;
+          } catch (e) {
+            print(e);
+            return false;
+          }
+          break;
+        default:
+          return false;
       }
-      _provider = AuthProvider.google;
+      _isSignedIn = true;
+      _provider = provider;
     }
     notifyListeners();
     return true;
@@ -39,7 +75,9 @@ class AuthService extends ChangeNotifier {
       default:
         return false;
     }
-    _account = null;
+    _displayName = null;
+    _email = null;
+    _isSignedIn = false;
     _provider = null;
     notifyListeners();
     return true;

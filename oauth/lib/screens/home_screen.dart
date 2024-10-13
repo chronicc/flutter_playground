@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ImageTile('images/google.png', onTap: () async {
-                    if (await authService.signInWithGoogle()) {
+                    if (await authService.signIn(AuthProvider.google)) {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
@@ -55,13 +55,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                   }),
                   const SizedBox(width: 10.0),
-                  ImageTile('images/apple.png', onTap: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Apple Login used'),
-                        duration: Duration(seconds: 1),
-                      ),
-                    );
+                  ImageTile('images/apple.png', onTap: () async {
+                    if (await authService.signIn(AuthProvider.apple)) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Logged in with Apple'),
+                            duration: Duration(seconds: 1),
+                          ),
+                        );
+                      }
+                    }
                   }),
                   const SizedBox(width: 10.0),
                   ImageTile('images/x.png', onTap: () {
@@ -87,16 +91,13 @@ class _HomeScreenState extends State<HomeScreen> {
               const Divider(),
               const SizedBox(height: 25.0),
               Row(children: <Widget>[
-                Text(
-                    'Account: ${authService.account == null ? 'Not logged in' : 'Logged in'}')
+                Text('Account: ${authService.isSignedIn ? 'Logged in' : 'Not logged in'}')
               ]),
-              Row(children: <Widget>[
-                Text('Display Name: ${authService.account?.displayName}')
-              ]),
-              Row(children: <Widget>[Text('Email: ${authService.account?.email}')]),
+              Row(children: <Widget>[Text('Display Name: ${authService.displayName}')]),
+              Row(children: <Widget>[Text('Email: ${authService.email}')]),
               const SizedBox(height: 25.0),
               FilledButton(
-                onPressed: authService.authenticated
+                onPressed: authService.isSignedIn
                     ? () async {
                         if (await authService.signOut()) {
                           if (context.mounted) {
