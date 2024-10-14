@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:oauth/secrets.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -58,6 +59,26 @@ class AuthService extends ChangeNotifier {
           }
           break;
         // ------------------------------------------------------------------------------
+        // Facebook
+        // ------------------------------------------------------------------------------
+        case AuthProvider.facebook:
+          try {
+            await FacebookAuth.instance.login(
+              loginBehavior: LoginBehavior.dialogOnly,
+              permissions: [
+                "email",
+                "public_profile",
+              ],
+            );
+            final userData = await FacebookAuth.instance.getUserData();
+            _displayName = userData['name'];
+            _email = userData['email'];
+          } catch (e) {
+            print('Facebook Error: $e');
+            return false;
+          }
+          break;
+        // ------------------------------------------------------------------------------
         // Google
         // ------------------------------------------------------------------------------
         case AuthProvider.google:
@@ -103,6 +124,9 @@ class AuthService extends ChangeNotifier {
     switch (_provider) {
       case AuthProvider.apple:
         // Apple does not have a sign out method
+        break;
+      case AuthProvider.facebook:
+        await FacebookAuth.instance.logOut();
         break;
       case AuthProvider.google:
         await _googleSignIn.signOut();

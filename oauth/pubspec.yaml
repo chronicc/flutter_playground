@@ -43,6 +43,7 @@ dependencies:
     git:
       url: https://github.com/0maru/twitter_login.git
       ref: 9ecd17c9af7675b00925fcdcd578e1294844f861
+  flutter_facebook_auth: ^7.1.1
 
 dev_dependencies:
   flutter_test:

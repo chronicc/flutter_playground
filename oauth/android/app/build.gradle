@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.oauth"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -24,10 +24,15 @@ android {
         applicationId = "com.example.oauth"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        minSdk = 27
+        targetSdk = 35
+        versionCode = 1001
+        versionName = "0.0.1"
+
+        def secrets = new Properties()
+        file("../secrets.properties").withInputStream { secrets.load(it) }
+        manifestPlaceholders["facebookAppId"] = secrets.getProperty("facebookAppId")
+        manifestPlaceholders["facebookClientToken"] = secrets.getProperty("facebookClientToken")
     }
 
     buildTypes {
