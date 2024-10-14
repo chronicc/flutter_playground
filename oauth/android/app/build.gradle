@@ -28,6 +28,11 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        def secrets = new Properties()
+        file("../secrets.properties").withInputStream { secrets.load(it) }
+        manifestPlaceholders["facebookAppId"] = secrets.getProperty("facebookAppId")
+        manifestPlaceholders["facebookClientToken"] = secrets.getProperty("facebookClientToken")
     }
 
     buildTypes {
