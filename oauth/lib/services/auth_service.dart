@@ -54,7 +54,7 @@ class AuthService extends ChangeNotifier {
             _displayName = '$account.givenName $account.familyName';
             _email = account.email;
           } catch (e) {
-            print('Apple Error: $e');
+            debugPrint('Apple Error: $e');
             return false;
           }
           break;
@@ -74,7 +74,7 @@ class AuthService extends ChangeNotifier {
             _displayName = userData['name'];
             _email = userData['email'];
           } catch (e) {
-            print('Facebook Error: $e');
+            debugPrint('Facebook Error: $e');
             return false;
           }
           break;
@@ -87,7 +87,7 @@ class AuthService extends ChangeNotifier {
             _displayName = account!.displayName;
             _email = account.email;
           } catch (e) {
-            print('Google Error: $e');
+            debugPrint('Google Error: $e');
             return false;
           }
           break;
@@ -115,9 +115,10 @@ class AuthService extends ChangeNotifier {
       }
       _isSignedIn = true;
       _provider = provider;
+      notifyListeners();
+      return true;
     }
-    notifyListeners();
-    return true;
+    return false;
   }
 
   Future<bool> signOut() async {
